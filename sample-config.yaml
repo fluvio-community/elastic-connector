@@ -1,0 +1,13 @@
+apiVersion: 0.1.0
+meta:
+  version: 0.1.0
+  name: my-es-sink-connector-test-connector
+  type: es-sink-connector-sink
+  topic: testing
+custom:
+  url: http://127.0.0.1:9200
+  index: test-index
+  username: elastic
+  password: changeme
+
+
