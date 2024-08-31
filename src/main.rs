@@ -2,9 +2,7 @@ mod config;
 mod sink;
 
 use config::ElasticSearchConfig;
-
 use futures::{SinkExt, StreamExt};
-
 use fluvio_connector_common::{connector, consumer::ConsumerStream, tracing, Result, Sink};
 use sink::ElasticSearchSink;
 

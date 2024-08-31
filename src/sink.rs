@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use elasticsearch::{
     auth::Credentials,
     http::{
-        transport::{SingleNodeConnectionPool, TransportBuilder},
+        transport::{SingleNodeConnectionPool, Transport, TransportBuilder},
         Url,
     },
     Elasticsearch, Index, IndexParts,
@@ -20,12 +20,22 @@ pub(crate) struct ElasticSearchSink {
 
 impl ElasticSearchSink {
     pub(crate) fn new(config: ElasticSearchConfig) -> Result<Self> {
-        let conn_pool = SingleNodeConnectionPool::new(Url::parse(&config.url)?);
-        let credentials = Credentials::Basic(config.username, config.password);
-        let transport = TransportBuilder::new(conn_pool)
-            .auth(credentials)
-            .disable_proxy()
-            .build()?;
+        let credentials = Credentials::Basic(config.username.resolve()?, config.password.resolve()?);
+        let transport: Transport;
+        
+        match &config.cloud_id {
+            Some(cloud_id) => {
+                transport = Transport::cloud( &cloud_id.resolve()?, credentials)?   
+            }
+            None => {
+                let conn_pool = SingleNodeConnectionPool::new(Url::parse(&config.url)?);
+                transport = TransportBuilder::new(conn_pool)
+                    .auth(credentials)
+                    .disable_proxy()
+                    .build()?;
+            },            
+        }
+        
         let client: Elasticsearch = Elasticsearch::new(transport);
         Ok(Self {
             client,
