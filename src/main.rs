@@ -19,11 +19,9 @@ async fn start(config: ElasticSearchConfig, mut stream: impl ConsumerStream) -> 
         tracing::trace!("Record sent to Elasticsearch");
         match result {
             Ok(_) => {
-                println!("Success");
                 tracing::debug!("Record processed by Elasticsearch");
             }
             Err(error) => {
-                println!("{:#?}", error);
                 tracing::error!("Error sending record to Elasticsearch: {:?}", error);
             }
         }

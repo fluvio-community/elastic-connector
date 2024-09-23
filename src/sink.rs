@@ -64,7 +64,6 @@ impl Sink<String> for ElasticSearchSink {
                 //this error is not reversible
                 let request: Index<()> = client.index(IndexParts::Index(&index_name));
                 let _response = request.body(value).send().await?;
-                println!("{:#?}", _response);
                 tracing::debug!("Record sent to Elasticsearch");
 
                 Ok::<_, anyhow::Error>((client, index_name))
