@@ -12,8 +12,11 @@ futures = { version = "0.3", default-features = false }
 serde = { version = "1.0", default-features = false, features = ["derive"]}
 serde_json = "1.0.122"
 anyhow = "1.0.86"
-elasticsearch = "8.5.0-alpha.1"
+elasticsearch = "8.15.0-alpha.1"
 async-trait = "0.1.81"
 
-fluvio = { git = "https://github.com/infinyon/fluvio", rev = "171fba00b4ae70094bfd54a4a32427baef9ecf02" }
-fluvio-connector-common = { git = "https://github.com/infinyon/fluvio", rev = "171fba00b4ae70094bfd54a4a32427baef9ecf02", features = ["derive"] }
+fluvio = { git = "https://github.com/infinyon/fluvio", tag = "v0.13.0" }
+fluvio-connector-common = { git = "https://github.com/infinyon/fluvio", tag = "v0.13.0", features = ["derive"] }
+
+# transitive dependency version picks
+bytes = "1.8.0"
