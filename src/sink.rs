@@ -20,18 +20,17 @@ pub(crate) struct ElasticSearchSink {
 
 impl ElasticSearchSink {
     pub(crate) fn new(config: ElasticSearchConfig) -> Result<Self> {
-        let credentials = Credentials::Basic(config.username.resolve()?, config.password.resolve()?);
+        let credentials =
+            Credentials::Basic(config.username.resolve()?, config.password.resolve()?);
         let transport: Transport = match &config.cloud_id {
-            Some(cloud_id) => {
-                Transport::cloud( &cloud_id.resolve()?, credentials)?
-            }
+            Some(cloud_id) => Transport::cloud(&cloud_id.resolve()?, credentials)?,
             None => {
                 let conn_pool = SingleNodeConnectionPool::new(Url::parse(&config.url)?);
                 TransportBuilder::new(conn_pool)
                     .auth(credentials)
                     .disable_proxy()
                     .build()?
-            },
+            }
         };
 
         let client: Elasticsearch = Elasticsearch::new(transport);

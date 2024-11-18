@@ -9,5 +9,4 @@ pub(crate) struct ElasticSearchConfig {
     pub(crate) username: SecretString,
     pub(crate) password: SecretString,
     pub(crate) cloud_id: Option<SecretString>,
-    
 }
